@@ -1,5 +1,6 @@
 package PROYECTO.MAAT.Controlador;
 
+import PROYECTO.MAAT.Entidades.Producto;
 import PROYECTO.MAAT.Servicio.SerProducto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -27,8 +30,14 @@ public class HomeController {
     }
 
     @GetMapping("productohome/{id}")
-    public String productoHome(@PathVariable Integer id){
+    public String productoHome(@PathVariable Integer id, Model model){
         log.info("Id enviado como parametro {}", id);
+        Producto producto = new Producto();
+        Optional<Producto> productoOptional = serProducto.get(id);
+        producto = productoOptional.get();
+
+        model.addAttribute("producto", producto);
+
         return "Usuario/productohome";
     }
 }
