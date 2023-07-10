@@ -3,6 +3,8 @@ package PROYECTO.MAAT.Controlador;
 import PROYECTO.MAAT.Entidades.DetalleOrden;
 import PROYECTO.MAAT.Entidades.Orden;
 import PROYECTO.MAAT.Entidades.Producto;
+import PROYECTO.MAAT.Entidades.Usuario;
+import PROYECTO.MAAT.Servicio.IUsuarioService;
 import PROYECTO.MAAT.Servicio.SerProducto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,8 @@ public class HomeController {
 
     @Autowired
     private SerProducto serProducto;
+    @Autowired
+    private IUsuarioService usuarioService;
 
     List<DetalleOrden> detalles = new ArrayList<DetalleOrden>();
 
@@ -111,8 +115,14 @@ public class HomeController {
     }
 
     @GetMapping("/order")
-    public String order(){
+    public String order(Model model){
 
+        Usuario usuario = usuarioService.findById(1).get();
+
+
+        model.addAttribute("cart", detalles);
+        model.addAttribute("orden", orden);
+        model.addAttribute("usuario", usuario);
         return "Usuario/resumenorden";
     }
 }
